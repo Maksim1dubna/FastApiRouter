@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from app.backend.db import Base
 from sqlalchemy import Column, ForeignKey, Integer, String, Boolean
 from sqlalchemy.orm import relationship
+from app.schemas import CrateTask
 
 router = APIRouter(prefix="/task", tags=["task"])
 

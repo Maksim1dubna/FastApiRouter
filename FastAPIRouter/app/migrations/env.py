@@ -22,7 +22,10 @@ if config.config_file_name is not None:
 from app.backend.db import Base
 from app.routers.users import User
 from app.routers.task import Task
+
 target_metadata = Base.metadata
+
+
 # alembic revision --autogenerate -m "First migration"
 
 # other values from the config, defined by the needs of env.py,
