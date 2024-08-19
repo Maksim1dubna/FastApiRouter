@@ -36,14 +36,22 @@ async def all_task():
 async def user_by_id():
     pass
 
-@router.get("/create")
-async def create_user():
-    pass
+@router.post("/create")
+async def create_user(db: Annotated[Session, Depends(get_db)], create_user: CreateUser):
+    db.execute(insert(User).values(
+                                   username = create_user.username,
+                                   firstname = create_user.firstname,
+                                   lastname = create_user.lastname,
+                                   age = create_user.age,
+                                   slug = slugify(create_user.firstname)))
+    db.commit()
+    return {'status_code': status.HTTP_201_CREATED,
+            'transaction': 'Successful'}
 
-@router.get("/update")
+@router.put("/update")
 async def update_user():
     pass
 
-@router.get("/delete")
+@router.delete("/delete")
 async def delete_user():
     pass

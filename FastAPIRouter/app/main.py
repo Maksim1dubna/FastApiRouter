@@ -1,6 +1,7 @@
 # cd app
 # python -m uvicorn app.main:app
 # alembic revision --autogenerate -m "Initial migration"
+# alembic upgrade head
 
 from fastapi import FastAPI
 from app.routers import users, task

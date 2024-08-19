@@ -26,14 +26,14 @@ async def all_task():
 async def task_by_id():
     pass
 
-@router.get("/create")
+@router.post("/create")
 async def create_task():
     pass
 
-@router.get("/update")
+@router.put("/update")
 async def update_task():
     pass
 
-@router.get("/delete")
+@router.delete("/delete")
 async def delete_task():
     pass
