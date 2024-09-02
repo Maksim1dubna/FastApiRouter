@@ -15,6 +15,8 @@ from app.backend.db import Base
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 
+from app.models.task import Task
+
 router = APIRouter(prefix="/user", tags=["user"])
 
 
@@ -80,6 +82,7 @@ async def delete_user(db: Annotated[Session, Depends(get_db)], user_id: int):
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Nothing found to delete"
         )
+    db.execute(delete(Task).where(user_id == Task.user_id))
     db.execute(delete(User).where(user_id == User.id))
     db.commit()
     return {'status_code': status.HTTP_200_OK,
