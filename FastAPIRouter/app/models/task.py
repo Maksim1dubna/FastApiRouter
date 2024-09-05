@@ -2,6 +2,8 @@ from fastapi import APIRouter, Depends, status, HTTPException
 import slugify
 # Сессия БД
 from sqlalchemy.orm import Session
+
+import app.models.users
 # Функция подключения к БД
 from app.backend.db_depends import get_db
 # Аннотации, Модели БД и Pydantic.
@@ -14,7 +16,7 @@ from sqlalchemy import insert, select, update, delete
 from app.backend.db import Base
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
-
+# from app.models.users import User
 
 router = APIRouter(prefix="/task", tags=["task"])
 
@@ -44,6 +46,9 @@ async def task_by_id(db: Annotated[Session, Depends(get_db)], task_id: int):
 
 @router.post("/create_task")
 async def create_task(db: Annotated[Session, Depends(get_db)], create_task: CrateTask):
+    user = db.scalar(select(app.models.users.User).where(create_task.user_id == app.models.users.User.id))
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="This user doesnt exist")
     db.execute(insert(Task).values(
         title = create_task.title,
         content = create_task.content,
