@@ -45,6 +45,12 @@ async def user_by_id(db: Annotated[Session, Depends(get_db)], user_id: int):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
     return user
 
+@router.get("/user_id/tasks")
+def tasks_by_user_id(db: Annotated[Session, Depends(get_db)], user_id: int):
+    tasks = db.scalars(select(Task).where(user_id == Task.user_id)).all()
+    if tasks == []:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Tasks not found")
+    return tasks
 
 @router.post("/create_user")
 async def create_user(db: Annotated[Session, Depends(get_db)], create_user: CreateUser):
